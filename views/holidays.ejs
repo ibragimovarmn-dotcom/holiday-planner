@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<a href="/" class="back-link">← New search</a>
+
+<h1>Public holidays in <%= countryName %>, <%= year %></h1>
+
+<% if (holidays.length === 0) { %>
+  <!-- "No results" state -->
+  <div class="card">
+    <p>No public holidays were found for this country and year.</p>
+  </div>
+<% } else { %>
+  <p><%= holidays.length %> holidays found.</p>
+
+  <ul class="holiday-list">
+    <% holidays.forEach(holiday => { %>
+      <li class="holiday-item">
+        <div class="holiday-date"><%= holiday.formattedDate %></div>
+        <div class="holiday-info">
+          <strong><%= holiday.name %></strong>
+          <% if (holiday.localName !== holiday.name) { %>
+            <span class="local-name"><%= holiday.localName %></span>
+          <% } %>
+        </div>
+        <% if (!holiday.global) { %>
+          <span class="badge">Regional</span>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<%- include('partials/footer') %>

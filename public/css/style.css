@@ -39,3 +39,24 @@ button {
 button:hover { background: #b56d07; }
 
 .site-footer { text-align: center; padding: 2rem 1rem; color: #666; }
+
+.alert {
+  background: #fde8e8; color: #9b1c1c;
+  padding: 0.8rem 1rem; border-radius: 6px; margin-bottom: 1rem;
+}
+
+.back-link { display: inline-block; margin-bottom: 1rem; color: #2b4c7e; }
+
+.holiday-list { list-style: none; padding: 0; }
+.holiday-item {
+  display: flex; align-items: center; gap: 1rem;
+  background: #fff; padding: 1rem; margin-bottom: 0.6rem;
+  border-radius: 8px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+.holiday-date { min-width: 140px; font-weight: 600; color: #2b4c7e; }
+.holiday-info { flex: 1; display: flex; flex-direction: column; }
+.local-name { color: #666; font-size: 0.9rem; }
+.badge {
+  background: #fff3cd; color: #856404;
+  padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.8rem;
+}

@@ -4,6 +4,11 @@
   <h1>Find public holidays</h1>
   <p>Choose a country and a year to see all public holidays.</p>
 
+  <!-- Show an error message only if there is one -->
+  <% if (error) { %>
+    <div class="alert"><%= error %></div>
+  <% } %>
+
   <!-- GET form: values are sent as query parameters, e.g. /holidays?country=KZ&year=2026 -->
   <form action="/holidays" method="GET" class="search-form">
     <div class="form-group">
@@ -11,7 +16,10 @@
       <select id="country" name="country" required>
         <option value="">-- Select a country --</option>
         <% countries.forEach(country => { %>
-          <option value="<%= country.countryCode %>"><%= country.name %></option>
+          <option value="<%= country.countryCode %>"
+            <%= country.countryCode === selectedCountry ? 'selected' : '' %>>
+            <%= country.name %>
+          </option>
         <% }) %>
       </select>
     </div>
@@ -19,7 +27,7 @@
     <div class="form-group">
       <label for="year">Year</label>
       <input type="number" id="year" name="year"
-             min="2000" max="2100" value="<%= currentYear %>" required>
+             min="2000" max="2100" value="<%= selectedYear %>" required>
       <small>Enter a year between 2000 and 2100.</small>
     </div>
 
@@ -28,3 +36,4 @@
 </section>
 
 <%- include('partials/footer') %>
+
