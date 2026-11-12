@@ -62,30 +62,26 @@ export const showHolidays = async (req, res) => {
     });
   }
 
-  try {
+    try {
+    // 3. Two API requests at the same time (they don't depend on each other)
     const [holidays, countryInfo] = await Promise.all([
       getPublicHolidays(year, country),
       getCountryInfo(country)
     ]);
 
-  
-    const processed = holidays
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .map(holiday => ({
-        ...holiday,
-        
-        formattedDate: new Date(holiday.date + 'T00:00:00').toLocaleDateString('en-GB', {
-          weekday: 'short',
-          day: 'numeric',
-          month: 'long'
-        })
-      }));
+    // 4. Process the raw API data step by step
+    const merged = mergeConsecutiveHolidays(holidays); // join multi-day holidays
+    const detailed = addHolidayDetails(merged);        // status, countdown, weekend days
+    const months = groupByMonth(detailed);             // group for display
+    const summary = getSummary(detailed);              // totals + next holiday
 
+    // 5. Render the results page
     res.render('holidays', {
       title: `Holidays in ${countryInfo.commonName}`,
       countryName: countryInfo.commonName,
       year,
-      holidays: processed
+      months,
+      summary
     });
   } catch (error) {
     
@@ -99,3 +95,10 @@ export const showHolidays = async (req, res) => {
     renderHome(res, { error: message, selectedCountry: country, selectedYear: year });
   }
 };
+
+import {
+  mergeConsecutiveHolidays,
+  addHolidayDetails,
+  groupByMonth,
+  getSummary
+} from '../utils/holidayHelpers.js';

@@ -4,30 +4,71 @@
 
 <h1>Public holidays in <%= countryName %>, <%= year %></h1>
 
-<% if (holidays.length === 0) { %>
+<% if (summary.totalHolidays === 0) { %>
   <!-- "No results" state -->
   <div class="card">
     <p>No public holidays were found for this country and year.</p>
   </div>
 <% } else { %>
-  <p><%= holidays.length %> holidays found.</p>
 
-  <ul class="holiday-list">
-    <% holidays.forEach(holiday => { %>
-      <li class="holiday-item">
-        <div class="holiday-date"><%= holiday.formattedDate %></div>
-        <div class="holiday-info">
-          <strong><%= holiday.name %></strong>
-          <% if (holiday.localName !== holiday.name) { %>
-            <span class="local-name"><%= holiday.localName %></span>
-          <% } %>
-        </div>
-        <% if (!holiday.global) { %>
-          <span class="badge">Regional</span>
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
+  <!-- Summary numbers -->
+  <div class="summary">
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.totalHolidays %></span>
+      <span>holidays</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.totalDays %></span>
+      <span>days off</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.weekendDays %></span>
+      <span>fall on a weekend</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.upcomingCount %></span>
+      <span>still to come</span>
+    </div>
+  </div>
+
+  <!-- Next holiday (only if there is one left this year) -->
+  <% if (summary.nextHoliday) { %>
+    <div class="next-holiday">
+      Next holiday: <strong><%= summary.nextHoliday.name %></strong>,
+      <%= summary.nextHoliday.formattedDate %> (<%= summary.nextHoliday.relativeLabel %>)
+    </div>
+  <% } %>
+
+  <!-- Holidays grouped by month -->
+  <% months.forEach(group => { %>
+    <h2 class="month-title"><%= group.month %></h2>
+    <ul class="holiday-list">
+      <% group.holidays.forEach(holiday => { %>
+        <li class="holiday-item <%= holiday.status %>">
+          <div class="holiday-date"><%= holiday.formattedDate %></div>
+          <div class="holiday-info">
+            <strong><%= holiday.name %></strong>
+            <% if (holiday.localName !== holiday.name) { %>
+              <span class="local-name"><%= holiday.localName %></span>
+            <% } %>
+            <span class="relative"><%= holiday.relativeLabel %></span>
+          </div>
+          <div class="badges">
+            <% if (holiday.days > 1) { %>
+              <span class="badge badge-days"><%= holiday.days %> days</span>
+            <% } %>
+            <% if (holiday.weekendDays > 0) { %>
+              <span class="badge badge-weekend">Weekend</span>
+            <% } %>
+            <% if (!holiday.global) { %>
+              <span class="badge">Regional</span>
+            <% } %>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+
 <% } %>
 
 <%- include('partials/footer') %>

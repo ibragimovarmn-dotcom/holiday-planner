@@ -12,7 +12,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: #e0911a;
+  background: #8b3ca3;
 }
 .site-header a { color: #fff; text-decoration: none; margin-left: 1rem; }
 .site-header .logo { margin-left: 0; font-weight: bold; font-size: 1.2rem; }
@@ -33,10 +33,10 @@ body {
 .form-group small { color: #666; margin-top: 0.3rem; }
 
 button {
-  background: hsl(32, 82%, 43%); color: #fff; border: none;
+  background: hsl(284, 50%, 33%); color: #fff; border: none;
   padding: 0.7rem 1.4rem; border-radius: 6px; font-size: 1rem; cursor: pointer;
 }
-button:hover { background: #b56d07; }
+button:hover { background: #7e38af; }
 
 .site-footer { text-align: center; padding: 2rem 1rem; color: #666; }
 
@@ -59,4 +59,40 @@ button:hover { background: #b56d07; }
 .badge {
   background: #fff3cd; color: #856404;
   padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.8rem;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.summary-item {
+  background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+.summary-number { display: block; font-size: 1.8rem; font-weight: 700; color: #2b4c7e; }
+
+.next-holiday {
+  background: #e6f0ff; border-left: 4px solid #2b4c7e;
+  padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;
+}
+
+.month-title {
+  font-size: 1.1rem; color: #555;
+  margin: 1.5rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid #ddd;
+}
+
+.holiday-item.past { opacity: 0.55; }
+.holiday-item.today { border: 2px solid #2b4c7e; }
+.relative { font-size: 0.85rem; color: #2b4c7e; margin-top: 0.2rem; }
+
+.badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.badge-days { background: #e0f2e9; color: #1e6b43; }
+.badge-weekend { background: #ede7f6; color: #5b3a9b; }
+
+
+@media (max-width: 600px) {
+  .holiday-item { flex-direction: column; align-items: flex-start; }
+  .holiday-date { min-width: auto; }
 }
