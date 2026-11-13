@@ -20,7 +20,7 @@ const countWeekendDays = (start, end) => {
   return count;
 };
 
-const formatDateRange = (start, end) => {
+export const formatDateRange = (start, end) => {
   if (daysBetween(start, end) === 0) {
     return start.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long' });
   }
@@ -109,3 +109,51 @@ export const getSummary = (holidays) => ({
   upcomingCount: holidays.filter(h => h.status !== 'past').length,
   nextHoliday: holidays.find(h => h.status !== 'past') || null
 });
+
+
+export const processLongWeekends = (weekends, sortBy = 'date') => {
+  const today = getToday();
+
+  const processed = weekends.map(weekend => {
+    const start = parseDate(weekend.startDate);
+    const end = parseDate(weekend.endDate);
+
+    
+    const bridgeDays = (weekend.bridgeDays || []).map(day =>
+      parseDate(day).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
+    );
+
+    return {
+      start,
+      end,
+      formattedDate: formatDateRange(start, end),
+      dayCount: weekend.dayCount,
+      needBridgeDay: weekend.needBridgeDay,
+      bridgeDays,
+      isPast: end < today
+    };
+  });
+
+  if (sortBy === 'length') {
+   
+    processed.sort((a, b) => b.dayCount - a.dayCount || a.start - b.start);
+  } else {
+    processed.sort((a, b) => a.start - b.start);
+  }
+  return processed;
+};
+
+
+export const getLongWeekendSummary = (weekends) => {
+  if (weekends.length === 0) return null;
+
+ 
+  const longest = weekends.reduce((max, w) => (w.dayCount > max.dayCount ? w : max));
+
+  return {
+    total: weekends.length,
+    withoutBridge: weekends.filter(w => !w.needBridgeDay).length,
+    withBridge: weekends.filter(w => w.needBridgeDay).length,
+    longest
+  };
+};

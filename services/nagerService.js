@@ -22,3 +22,15 @@ export const getCountryInfo = async (countryCode) => {
   const response = await api.get(`/CountryInfo/${countryCode}`);
   return response.data;
 };
+
+
+export const getNextPublicHolidays = async (countryCode) => {
+  const response = await api.get(`/NextPublicHolidays/${countryCode}`);
+  return response.data;
+};
+
+
+export const getLongWeekends = async (year, countryCode) => {
+  const response = await api.get(`/LongWeekend/${year}/${countryCode}`);
+  return response.data;
+};

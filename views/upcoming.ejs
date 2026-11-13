@@ -1,0 +1,53 @@
+<%- include('partials/header') %>
+
+<a href="/" class="back-link">← New search</a>
+
+<h1>Upcoming holidays in <%= countryName %></h1>
+<p>Public holidays in the next 12 months.</p>
+
+<% if (holidays.length === 0) { %>
+  <div class="card">
+    <p>There are no upcoming public holidays for this country.</p>
+  </div>
+<% } else { %>
+
+  <!-- Big countdown to the nearest holiday -->
+  <div class="countdown card">
+    <% if (holidays[0].status === 'today') { %>
+      <span class="countdown-number">🎉</span>
+      <span>Today is <strong><%= holidays[0].name %></strong>!</span>
+    <% } else { %>
+      <span class="countdown-number"><%= holidays[0].daysUntil %></span>
+      <span>days until <strong><%= holidays[0].name %></strong> (<%= holidays[0].formattedDate %>)</span>
+    <% } %>
+  </div>
+
+  <p><%= holidays.length %> holidays and <%= totalDays %> days off in the next 12 months.</p>
+
+  <ul class="holiday-list">
+    <% holidays.forEach(holiday => { %>
+      <li class="holiday-item">
+        <div class="holiday-date">
+          <%= holiday.formattedDate %> <%= holiday.start.getFullYear() %>
+        </div>
+        <div class="holiday-info">
+          <strong><%= holiday.name %></strong>
+          <span class="relative"><%= holiday.relativeLabel %></span>
+        </div>
+        <div class="badges">
+          <% if (holiday.days > 1) { %>
+            <span class="badge badge-days"><%= holiday.days %> days</span>
+          <% } %>
+          <% if (holiday.weekendDays > 0) { %>
+            <span class="badge badge-weekend">Weekend</span>
+          <% } %>
+          <% if (!holiday.global) { %>
+            <span class="badge">Regional</span>
+          <% } %>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+<a href="/holidays?country=<%= countryCode %>&year=<%= year %>" class="back-link">← Back to holidays</a>
+
+<h1>Long weekends in <%= countryName %>, <%= year %></h1>
+
+<% if (!summary) { %>
+  <div class="card">
+    <p>No long weekends were found for this country and year.</p>
+  </div>
+<% } else { %>
+
+  <div class="summary">
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.total %></span>
+      <span>long weekends</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.withoutBridge %></span>
+      <span>without extra days off</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.withBridge %></span>
+      <span>need a bridge day</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-number"><%= summary.longest.dayCount %></span>
+      <span>days: the longest (<%= summary.longest.formattedDate %>)</span>
+    </div>
+  </div>
+
+  <!-- Sorting: the link keeps the same page and only changes ?sort= -->
+  <div class="sort-links">
+    Sort by:
+    <a href="?sort=date" class="<%= sortBy === 'date' ? 'active' : '' %>">Date</a>
+    <a href="?sort=length" class="<%= sortBy === 'length' ? 'active' : '' %>">Length</a>
+  </div>
+
+  <ul class="holiday-list">
+    <% weekends.forEach(weekend => { %>
+      <li class="holiday-item <%= weekend.isPast ? 'past' : '' %>">
+        <div class="holiday-date"><%= weekend.formattedDate %></div>
+        <div class="holiday-info">
+          <strong><%= weekend.dayCount %> days off</strong>
+          <% if (weekend.needBridgeDay) { %>
+            <span class="local-name">
+              Take a day off<% if (weekend.bridgeDays.length > 0) { %> on <%= weekend.bridgeDays.join(', ') %><% } %>
+              to get this long weekend
+            </span>
+          <% } else { %>
+            <span class="local-name">No extra days off needed</span>
+          <% } %>
+        </div>
+        <div class="badges">
+          <% if (weekend.needBridgeDay) { %>
+            <span class="badge">Bridge day</span>
+          <% } else { %>
+            <span class="badge badge-days">Free</span>
+          <% } %>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<%- include('partials/footer') %>

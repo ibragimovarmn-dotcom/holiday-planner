@@ -4,6 +4,11 @@
 
 <h1>Public holidays in <%= countryName %>, <%= year %></h1>
 
+<div class="page-links">
+  <a href="/upcoming/<%= countryCode %>">Upcoming holidays →</a>
+  <a href="/long-weekends/<%= countryCode %>/<%= year %>">Long weekends in <%= year %> →</a>
+</div>
+
 <% if (summary.totalHolidays === 0) { %>
   <!-- "No results" state -->
   <div class="card">
