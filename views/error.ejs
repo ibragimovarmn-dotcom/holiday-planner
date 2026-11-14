@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+
+<section class="card error-page">
+  <div class="error-code"><%= status %></div>
+  <h1>Oops!</h1>
+  <!-- Only the friendly message - never the stack trace -->
+  <p><%= message %></p>
+  <a href="/" class="button-link">← Back to search</a>
+</section>
+
+<%- include('partials/footer') %>

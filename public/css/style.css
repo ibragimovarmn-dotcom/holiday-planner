@@ -97,7 +97,7 @@ button:hover { background: #7e38af; }
   .holiday-date { min-width: auto; }
 }
 
-/* Links to other pages under the heading */
+
 .page-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
 .page-links a {
   background: #fff; color: #2b4c7e; text-decoration: none;
@@ -105,14 +105,23 @@ button:hover { background: #7e38af; }
 }
 .page-links a:hover { background: #e6f0ff; }
 
-/* Countdown on the upcoming page */
 .countdown { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
 .countdown-number { font-size: 3rem; font-weight: 700; color: #2b4c7e; line-height: 1; }
 
-/* Sort links on the long weekends page */
 .sort-links { margin: 1rem 0; }
 .sort-links a {
   margin-left: 0.5rem; padding: 0.3rem 0.8rem; border-radius: 999px;
   text-decoration: none; color: #2b4c7e; border: 1px solid #c9d6ea;
 }
 .sort-links a.active { background: #2b4c7e; color: #fff; border-color: #2b4c7e; }
+
+
+.error-page { text-align: center; padding: 2.5rem 1.5rem; }
+.error-code { font-size: 4rem; font-weight: 800; color: #2b4c7e; line-height: 1; }
+.error-page code { background: #f0f0f0; padding: 0.1rem 0.4rem; border-radius: 4px; }
+.button-link {
+  display: inline-block; margin-top: 1rem;
+  background: #2b4c7e; color: #fff; text-decoration: none;
+  padding: 0.7rem 1.4rem; border-radius: 6px;
+}
+.button-link:hover { background: #1d3557; }

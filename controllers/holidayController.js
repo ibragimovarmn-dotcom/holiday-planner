@@ -1,3 +1,8 @@
+// controllers/holidayController.js
+// Controllers contain the logic for each route: get data, process it, render a view.
+// Input is already validated by middleware (req.validated),
+// and errors are passed to the central error handler with next(error).
+
 import {
   getAvailableCountries,
   getPublicHolidays,
@@ -24,19 +29,7 @@ const FALLBACK_COUNTRIES = [
   { countryCode: 'JP', name: 'Japan' }
 ];
 
-// Validation rules shared by all routes (will move into middleware on day 6)
-const isValidCountry = (code) => /^[A-Z]{2}$/.test(code);
-const isValidYear = (year) => Number.isInteger(year) && year >= 2000 && year <= 2100;
-
-// Turn an Axios error into a friendly message for the user
-const getApiErrorMessage = (error) => {
-  if (error.response && error.response.status === 404) {
-    return 'We could not find data for that country code.';
-  }
-  return 'The holiday service is unavailable right now. Please try again later.';
-};
-
-// Helper: load countries from the API, sorted A-Z; fall back to the backup list on error
+// Load countries from the API, sorted A-Z; fall back to the backup list on error
 const loadCountries = async () => {
   try {
     const countries = await getAvailableCountries();
@@ -47,22 +40,22 @@ const loadCountries = async () => {
   }
 };
 
-// Helper: render the home page (used for the normal page and for showing errors)
-const renderHome = async (res, { error = null, selectedCountry = '', selectedYear } = {}) => {
-  const countries = await loadCountries();
-  res.render('index', {
-    title: 'Home',
-    countries,
-    currentYear: new Date().getFullYear(),
-    selectedCountry,
-    selectedYear: selectedYear || new Date().getFullYear(),
-    error
-  });
-};
-
 // GET / - home page with the search form
-export const showHome = async (req, res) => {
-  await renderHome(res);
+export const showHome = async (req, res, next) => {
+  try {
+    const countries = await loadCountries();
+    const currentYear = new Date().getFullYear();
+    res.render('index', {
+      title: 'Home',
+      countries,
+      currentYear,
+      selectedCountry: '',
+      selectedYear: currentYear,
+      error: null
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // GET /about - information about the app and the API
@@ -71,39 +64,23 @@ export const showAbout = (req, res) => {
 };
 
 // GET /holidays?country=KZ&year=2026 - list of public holidays
-export const showHolidays = async (req, res) => {
-  // 1. Read and clean user input from the query string
-  const country = (req.query.country || '').trim().toUpperCase();
-  const year = Number(req.query.year);
-
-  // 2. Validate input BEFORE calling the API
-  if (!isValidCountry(country)) {
-    return renderHome(res, {
-      error: 'Please select a valid country.',
-      selectedYear: req.query.year
-    });
-  }
-  if (!isValidYear(year)) {
-    return renderHome(res, {
-      error: 'Please enter a year between 2000 and 2100.',
-      selectedCountry: country
-    });
-  }
+export const showHolidays = async (req, res, next) => {
+  // Clean values prepared by the validation middleware
+  const { country, year } = req.validated;
 
   try {
-    // 3. Two API requests at the same time (they don't depend on each other)
+    // Two API requests at the same time (they don't depend on each other)
     const [holidays, countryInfo] = await Promise.all([
       getPublicHolidays(year, country),
       getCountryInfo(country)
     ]);
 
-    // 4. Process the raw API data step by step
+    // Process the raw API data step by step
     const merged = mergeConsecutiveHolidays(holidays); // join multi-day holidays
     const detailed = addHolidayDetails(merged);        // status, countdown, weekend days
     const months = groupByMonth(detailed);             // group for display
     const summary = getSummary(detailed);              // totals + next holiday
 
-    // 5. Render the results page
     res.render('holidays', {
       title: `Holidays in ${countryInfo.commonName}`,
       countryName: countryInfo.commonName,
@@ -113,20 +90,13 @@ export const showHolidays = async (req, res) => {
       summary
     });
   } catch (error) {
-    // Log technical details for the developer, show a friendly message to the user
-    console.error('API error in showHolidays:', error.message);
-    renderHome(res, { error: getApiErrorMessage(error), selectedCountry: country, selectedYear: year });
+    next(error); // handled in middleware/errorHandler.js
   }
 };
 
 // GET /upcoming/:country - holidays in the next 12 months with a countdown
-export const showUpcoming = async (req, res) => {
-  // req.params contains values from the URL path, e.g. /upcoming/KZ -> { country: 'KZ' }
-  const country = req.params.country.toUpperCase();
-
-  if (!isValidCountry(country)) {
-    return renderHome(res, { error: 'Please select a valid country.' });
-  }
+export const showUpcoming = async (req, res, next) => {
+  const { country } = req.validated;
 
   try {
     const [holidays, countryInfo] = await Promise.all([
@@ -146,27 +116,15 @@ export const showUpcoming = async (req, res) => {
       totalDays
     });
   } catch (error) {
-    console.error('API error in showUpcoming:', error.message);
-    renderHome(res, { error: getApiErrorMessage(error), selectedCountry: country });
+    next(error);
   }
 };
 
 // GET /long-weekends/:country/:year?sort=date|length - long weekends in a year
-export const showLongWeekends = async (req, res) => {
-  const country = req.params.country.toUpperCase();
-  const year = Number(req.params.year);
+export const showLongWeekends = async (req, res, next) => {
+  const { country, year } = req.validated;
   // Whitelist: only 'length' is accepted, anything else becomes 'date'
   const sortBy = req.query.sort === 'length' ? 'length' : 'date';
-
-  if (!isValidCountry(country)) {
-    return renderHome(res, { error: 'Please select a valid country.' });
-  }
-  if (!isValidYear(year)) {
-    return renderHome(res, {
-      error: 'Please enter a year between 2000 and 2100.',
-      selectedCountry: country
-    });
-  }
 
   try {
     const [weekends, countryInfo] = await Promise.all([
@@ -187,7 +145,6 @@ export const showLongWeekends = async (req, res) => {
       sortBy
     });
   } catch (error) {
-    console.error('API error in showLongWeekends:', error.message);
-    renderHome(res, { error: getApiErrorMessage(error), selectedCountry: country, selectedYear: year });
+    next(error);
   }
 };
