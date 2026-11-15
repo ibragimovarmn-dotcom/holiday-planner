@@ -8,10 +8,13 @@
 </head>
 <body>
   <header class="site-header">
-    <a href="/" class="logo">🎉 Holiday Planner</a>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-    </nav>
+    <div class="header-inner">
+      <a href="/" class="logo">🎉 Holiday Planner</a>
+      <nav class="main-nav">
+        <!-- currentPath comes from middleware/setLocals.js -->
+        <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a>
+        <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a>
+      </nav>
+    </div>
   </header>
   <main class="container">

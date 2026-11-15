@@ -1,8 +1,12 @@
 <%- include('partials/header') %>
 
+<section class="hero">
+  <h1>Plan your days off 🎉</h1>
+  <p>Find public holidays, count down to the next one and discover long weekends in over 100 countries.</p>
+</section>
+
 <section class="card">
-  <h1>Find public holidays</h1>
-  <p>Choose a country and a year to see all public holidays.</p>
+  <h2>Find public holidays</h2>
 
   <!-- Show an error message only if there is one -->
   <% if (error) { %>
@@ -11,29 +15,42 @@
 
   <!-- GET form: values are sent as query parameters, e.g. /holidays?country=KZ&year=2026 -->
   <form action="/holidays" method="GET" class="search-form">
-    <div class="form-group">
-      <label for="country">Country</label>
-      <select id="country" name="country" required>
-        <option value="">-- Select a country --</option>
-        <% countries.forEach(country => { %>
-          <option value="<%= country.countryCode %>"
-            <%= country.countryCode === selectedCountry ? 'selected' : '' %>>
-            <%= country.name %>
-          </option>
-        <% }) %>
-      </select>
-    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="country">Country</label>
+        <select id="country" name="country" required>
+          <option value="">-- Select a country --</option>
+          <% countries.forEach(country => { %>
+            <option value="<%= country.countryCode %>"
+              <%= country.countryCode === selectedCountry ? 'selected' : '' %>>
+              <%= country.name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label for="year">Year</label>
-      <input type="number" id="year" name="year"
-             min="2000" max="2100" value="<%= selectedYear %>" required>
-      <small>Enter a year between 2000 and 2100.</small>
+      <div class="form-group form-group-small">
+        <label for="year">Year</label>
+        <input type="number" id="year" name="year"
+               min="2000" max="2100" value="<%= selectedYear %>" required>
+        <small>Between 2000 and 2100</small>
+      </div>
     </div>
 
     <button type="submit">Show holidays</button>
   </form>
 </section>
 
-<%- include('partials/footer') %>
+<section class="quick-links">
+  <h2>Quick look: upcoming holidays</h2>
+  <div class="quick-links-grid">
+    <% quickCountries.forEach(country => { %>
+      <a href="/upcoming/<%= country.countryCode %>" class="quick-link">
+        <span class="quick-code"><%= country.countryCode %></span>
+        <span><%= country.name %></span>
+      </a>
+    <% }) %>
+  </div>
+</section>
 
+<%- include('partials/footer') %>

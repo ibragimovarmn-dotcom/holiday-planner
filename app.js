@@ -6,7 +6,7 @@ import express from 'express';
 import holidayRoutes from './routes/holidayRoutes.js';
 import { logger } from './middleware/logger.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
-
+import { setLocals } from './middleware/setLocals.js';
 const app = express();
 
 // Read the port from .env; use 3000 if it's not set
@@ -27,6 +27,9 @@ app.use(express.json());
 // Placed after express.static, so only page requests are logged (not every CSS file)
 app.use(logger);
 
+// Shared variables for all views (active menu link, current year)
+app.use(setLocals);
+
 // --- Routes ---
 app.use('/', holidayRoutes);
 
@@ -40,3 +43,4 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+

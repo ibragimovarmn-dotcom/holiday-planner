@@ -51,7 +51,8 @@ export const showHome = async (req, res, next) => {
       currentYear,
       selectedCountry: '',
       selectedYear: currentYear,
-      error: null
+      error: null,
+      quickCountries: FALLBACK_COUNTRIES // reused for the "quick look" links
     });
   } catch (error) {
     next(error);
