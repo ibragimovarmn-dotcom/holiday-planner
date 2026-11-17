@@ -1,10 +1,11 @@
 <%- include('partials/header') %>
 
 <section class="card error-page">
+  <i class="bi bi-signpost-split error-icon" aria-hidden="true"></i>
   <div class="error-code">404</div>
   <h1>Page not found</h1>
   <p>Sorry, the page <code><%= url %></code> does not exist.</p>
-  <a href="/" class="button-link">Go to the home page</a>
+  <a href="/" class="button-link"><i class="bi bi-house-door" aria-hidden="true"></i> Go to the home page</a>
 </section>
 
 <%- include('partials/footer') %>

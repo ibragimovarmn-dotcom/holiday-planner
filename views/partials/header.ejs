@@ -4,16 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> | Holiday Planner</title>
+  <!-- Google Fonts: Playfair Display for headings, Nunito for text (fallback fonts are set in CSS) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons, served locally from node_modules (see app.js) -->
+  <link rel="stylesheet" href="/icons/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a href="/" class="logo">🎉 Holiday Planner</a>
+      <a href="/" class="logo">
+        <i class="bi bi-calendar-heart" aria-hidden="true"></i> Holiday Planner
+      </a>
       <nav class="main-nav">
         <!-- currentPath comes from middleware/setLocals.js -->
-        <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a>
-        <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a>
+        <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">
+          <i class="bi bi-house-door" aria-hidden="true"></i> Home
+        </a>
+        <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">
+          <i class="bi bi-info-circle" aria-hidden="true"></i> About
+        </a>
       </nav>
     </div>
   </header>

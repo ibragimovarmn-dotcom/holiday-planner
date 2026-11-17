@@ -1,29 +1,36 @@
 <%- include('partials/header') %>
 
-<a href="/holidays?country=<%= countryCode %>&year=<%= year %>" class="back-link">← Back to holidays</a>
+<a href="/holidays?country=<%= countryCode %>&year=<%= year %>" class="back-link">
+  <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to holidays
+</a>
 
 <h1>Long weekends in <%= countryName %>, <%= year %></h1>
 
 <% if (!summary) { %>
-  <div class="card">
+  <div class="card empty-state">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
     <p>No long weekends were found for this country and year.</p>
   </div>
 <% } else { %>
 
   <div class="summary">
     <div class="summary-item">
+      <i class="bi bi-calendar-range summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.total %></span>
       <span>long weekends</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-check-circle summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.withoutBridge %></span>
       <span>without extra days off</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-briefcase summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.withBridge %></span>
       <span>need a bridge day</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-trophy summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.longest.dayCount %></span>
       <span>days: the longest (<%= summary.longest.formattedDate %>)</span>
     </div>
@@ -31,7 +38,7 @@
 
   <!-- Sorting: the link keeps the same page and only changes ?sort= -->
   <div class="sort-links">
-    Sort by:
+    <i class="bi bi-sort-down" aria-hidden="true"></i> Sort by:
     <a href="?sort=date" class="<%= sortBy === 'date' ? 'active' : '' %>">Date</a>
     <a href="?sort=length" class="<%= sortBy === 'length' ? 'active' : '' %>">Length</a>
   </div>
@@ -53,9 +60,9 @@
         </div>
         <div class="badges">
           <% if (weekend.needBridgeDay) { %>
-            <span class="badge">Bridge day</span>
+            <span class="badge"><i class="bi bi-briefcase" aria-hidden="true"></i> Bridge day</span>
           <% } else { %>
-            <span class="badge badge-days">Free</span>
+            <span class="badge badge-days"><i class="bi bi-check-circle" aria-hidden="true"></i> Free</span>
           <% } %>
         </div>
       </li>

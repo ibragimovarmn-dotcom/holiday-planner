@@ -1,17 +1,22 @@
 <%- include('partials/header') %>
 
-<a href="/" class="back-link">← New search</a>
+<a href="/" class="back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> New search</a>
 
 <h1>Public holidays in <%= countryName %>, <%= year %></h1>
 
 <div class="page-links">
-  <a href="/upcoming/<%= countryCode %>">Upcoming holidays →</a>
-  <a href="/long-weekends/<%= countryCode %>/<%= year %>">Long weekends in <%= year %> →</a>
+  <a href="/upcoming/<%= countryCode %>">
+    <i class="bi bi-hourglass-split" aria-hidden="true"></i> Upcoming holidays
+  </a>
+  <a href="/long-weekends/<%= countryCode %>/<%= year %>">
+    <i class="bi bi-calendar-range" aria-hidden="true"></i> Long weekends in <%= year %>
+  </a>
 </div>
 
 <% if (summary.totalHolidays === 0) { %>
   <!-- "No results" state -->
-  <div class="card">
+  <div class="card empty-state">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
     <p>No public holidays were found for this country and year.</p>
   </div>
 <% } else { %>
@@ -19,18 +24,22 @@
   <!-- Summary numbers -->
   <div class="summary">
     <div class="summary-item">
+      <i class="bi bi-calendar-event summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.totalHolidays %></span>
       <span>holidays</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-cup-hot summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.totalDays %></span>
       <span>days off</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-calendar-week summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.weekendDays %></span>
       <span>fall on a weekend</span>
     </div>
     <div class="summary-item">
+      <i class="bi bi-hourglass-split summary-icon" aria-hidden="true"></i>
       <span class="summary-number"><%= summary.upcomingCount %></span>
       <span>still to come</span>
     </div>
@@ -39,6 +48,7 @@
   <!-- Next holiday (only if there is one left this year) -->
   <% if (summary.nextHoliday) { %>
     <div class="next-holiday">
+      <i class="bi bi-bell" aria-hidden="true"></i>
       Next holiday: <strong><%= summary.nextHoliday.name %></strong>,
       <%= summary.nextHoliday.formattedDate %> (<%= summary.nextHoliday.relativeLabel %>)
     </div>
@@ -60,13 +70,13 @@
           </div>
           <div class="badges">
             <% if (holiday.days > 1) { %>
-              <span class="badge badge-days"><%= holiday.days %> days</span>
+              <span class="badge badge-days"><i class="bi bi-calendar-range" aria-hidden="true"></i> <%= holiday.days %> days</span>
             <% } %>
             <% if (holiday.weekendDays > 0) { %>
-              <span class="badge badge-weekend">Weekend</span>
+              <span class="badge badge-weekend"><i class="bi bi-sun" aria-hidden="true"></i> Weekend</span>
             <% } %>
             <% if (!holiday.global) { %>
-              <span class="badge">Regional</span>
+              <span class="badge"><i class="bi bi-geo-alt" aria-hidden="true"></i> Regional</span>
             <% } %>
           </div>
         </li>

@@ -1,16 +1,17 @@
 <%- include('partials/header') %>
 
 <section class="hero">
-  <h1>Plan your days off 🎉</h1>
+  <div class="hero-icon"><i class="bi bi-calendar-heart" aria-hidden="true"></i></div>
+  <h1>Plan your days off</h1>
   <p>Find public holidays, count down to the next one and discover long weekends in over 100 countries.</p>
 </section>
 
 <section class="card">
-  <h2>Find public holidays</h2>
+  <h2><i class="bi bi-search" aria-hidden="true"></i> Find public holidays</h2>
 
   <!-- Show an error message only if there is one -->
   <% if (error) { %>
-    <div class="alert"><%= error %></div>
+    <div class="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> <%= error %></div>
   <% } %>
 
   <!-- GET form: values are sent as query parameters, e.g. /holidays?country=KZ&year=2026 -->
@@ -37,17 +38,18 @@
       </div>
     </div>
 
-    <button type="submit">Show holidays</button>
+    <button type="submit"><i class="bi bi-search" aria-hidden="true"></i> Show holidays</button>
   </form>
 </section>
 
 <section class="quick-links">
-  <h2>Quick look: upcoming holidays</h2>
+  <h2><i class="bi bi-hourglass-split" aria-hidden="true"></i> Quick look: upcoming holidays</h2>
   <div class="quick-links-grid">
     <% quickCountries.forEach(country => { %>
       <a href="/upcoming/<%= country.countryCode %>" class="quick-link">
-        <span class="quick-code"><%= country.countryCode %></span>
+        <i class="bi bi-geo-alt" aria-hidden="true"></i>
         <span><%= country.name %></span>
+        <span class="quick-code"><%= country.countryCode %></span>
       </a>
     <% }) %>
   </div>

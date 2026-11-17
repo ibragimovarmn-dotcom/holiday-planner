@@ -18,6 +18,9 @@ app.set('view engine', 'ejs');
 // --- Built-in middleware ---
 // Serve static files (CSS, images) from the "public" folder
 app.use(express.static('public'));
+// Serve Bootstrap Icons (installed with npm) from node_modules,
+// so the icons work without an internet connection
+app.use('/icons', express.static('node_modules/bootstrap-icons/font'));
 // Parse form data into req.body
 app.use(express.urlencoded({ extended: true }));
 // Parse JSON request bodies into req.body
