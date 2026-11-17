@@ -98,20 +98,27 @@ holiday-planner/
 │   └── errorHandler.js          # 404 handler + central error handler
 ├── views/                       # EJS templates (+ partials/header, footer)
 ├── public/css/style.css         # styles
-├── .env.example
+├── docs/screenshots/            # screenshots used in this README
+│   ├── home.png
+│   ├── holidays.png
+│   └── mobile.png
+├── .env.example                 # example environment variables
+├── .gitignore                   # excludes node_modules and .env
+├── package.json                 # dependencies and start script
 └── README.md
 ```
 
 ## Screenshots
 
 ### Home page
-
+![Home page](docs/screenshots/home.png)
 
 ### Holidays in Kazakhstan, 2026
+![Holidays page](docs/screenshots/holidays.png)
 
 
 ### Mobile view
-
+![Mobile view](docs/screenshots/mobile.png)
 
 ## Known limitations
 
@@ -122,6 +129,7 @@ holiday-planner/
 ## Credits and AI use
 
 - Holiday data: [Nager.Date](https://date.nager.at)
+- Icons: [Bootstrap Icons](https://icons.getbootstrap.com) (MIT License)
 - AI assistance (Claude) was used for explanations, code suggestions and debugging,
   as described in the AI Declaration submitted with this project.
   All code was reviewed, tested and can be explained by the author.

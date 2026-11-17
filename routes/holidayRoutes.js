@@ -1,6 +1,5 @@
-// routes/holidayRoutes.js
 // Routes connect URLs to controller functions.
-// Validation middleware runs first, in the order listed.
+// Validation middlewre runs first, in the order listed.
 
 import express from 'express';
 import {
@@ -12,7 +11,7 @@ import {
 } from '../controllers/holidayController.js';
 import { validateCountry, validateYear } from '../middleware/validate.js';
 
-const router = express.Router();
+const router = express.Router(); // Allows moving routes out of app.js into a separate file.
 
 router.get('/', showHome);
 router.get('/holidays', validateCountry, validateYear, showHolidays);                       // ?country=KZ&year=2026

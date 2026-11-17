@@ -1,8 +1,10 @@
 <%- include('partials/header') %>
 
-<a href="/holidays?country=<%= countryCode %>&year=<%= year %>" class="back-link">
-  <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to holidays
-</a>
+<div class="page-links">
+  <!-- countryCode comes from showUpcoming, currentYear from middleware/setLocals.js -->
+  <a href="/holidays?country=<%= countryCode %>&year=<%= currentYear %>">← Back to holidays</a>
+  <a href="/">New search</a>
+</div>
 
 <h1>Long weekends in <%= countryName %>, <%= year %></h1>
 
